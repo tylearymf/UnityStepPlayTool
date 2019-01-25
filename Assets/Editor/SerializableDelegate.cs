@@ -1,4 +1,28 @@
-﻿using System;
+﻿//参考自http://schemingdeveloper.com/2014/12/04/serializing-delegates-unity/
+//Delegate没有Serializable标记，但是可以序列化的原因是https://referencesource.microsoft.com/#mscorlib/system/rttype.cs,3830130f2931fca3
+/*
+ * 看BinaryFormatter源码时发现会调用该方法判断是否可序列化
+ * internal bool IsSpecialSerializableType()
+        {
+            RuntimeType rt = this;
+            do
+            {
+                // In all sane cases we only need to compare the direct level base type with
+                // System.Enum and System.MulticastDelegate. However, a generic argument can
+                // have a base type constraint that is Delegate or even a real delegate type.
+                // Let's maintain compatibility and return true for them.
+                if (rt == RuntimeType.DelegateType || rt == RuntimeType.EnumType)
+                    return true;
+ 
+                rt = rt.GetBaseType();
+            } while (rt != null);
+ 
+            return false;
+        }
+ * */
+
+
+using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
